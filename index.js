@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -14,10 +15,12 @@ app.use(userRoutes);
 app.use(productRoutes);
 app.use(orderRoutes);
 
-mongoose.connect("mongodb://localhost:27017/shopjsv2");
+mongoose.connect(process.env.MONGO_DB_CONNECTION_STRING);
 
 app.all("*", (req, res) => {
   res.status(404).json({ message: "This route does not exist" });
 });
 
-app.listen(4000, () => console.log("Server started"));
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
